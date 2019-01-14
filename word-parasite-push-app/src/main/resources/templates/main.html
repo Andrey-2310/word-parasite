@@ -5,21 +5,17 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <!--<script type="application/javascript" th:src="@{/js/libs/fc.js}"></script>-->
 </head>
 <body>
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="connect">WebSocket connection:</label>
-                    <button id="start" class="btn btn-default" type="submit">Start</button>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-                    </button>
-                </div>
-            </form>
+            <div class="form-group">
+                <label for="connect">WebSocket connection:</label>
+                <button id="connect" class="btn btn-default">Connect</button>
+                <button id="disconnect" class="btn btn-default" disabled="disabled">Disconnect
+                </button>
+            </div>
         </div>
         <div class="col-md-6">
             <form class="form-inline">

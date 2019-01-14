@@ -2,6 +2,8 @@ package com.redkovsky.wordparasitepushapp.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.Collections;
 import java.util.List;
 
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
@@ -29,7 +30,8 @@ public class FileChangeListener {
     private final FileManagerService fileManagerService;
     private final SimpMessagingTemplate template;
 
-        public void createFileListener() {
+    @EventListener(ApplicationReadyEvent.class)
+    public void createFileListener() {
         final Path filePath = Paths.get(directoryAddress + "/" + filename);
         try {
             WatchService watchService = FileSystems.getDefault().newWatchService();
@@ -37,7 +39,7 @@ public class FileChangeListener {
 
             WatchKey key;
             while ((key = watchService.take()) != null) {
-                key.pollEvents().forEach(watchEvent ->  {
+                key.pollEvents().forEach(watchEvent -> {
                     final List<String> content = fileManagerService.getFileContent(filePath);
                     sendAsyncMessage(content.get(content.size() - 1));
                 });

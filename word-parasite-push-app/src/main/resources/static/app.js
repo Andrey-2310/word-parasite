@@ -36,15 +36,7 @@ const showGreeting = message => {
     $("#userinfo").append("<tr><td>" + message + "</td></tr>");
 };
 
-const start = () => {
-    $.post( "/start" );
-};
-
 $(function () {
-    $("form").on('submit', function (e) {
-        e.preventDefault();
-    });
-    $( "#start" ).click(function() { start(); });
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
 });
