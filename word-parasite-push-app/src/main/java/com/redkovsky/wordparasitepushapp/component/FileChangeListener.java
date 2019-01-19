@@ -14,12 +14,16 @@ import java.nio.file.Paths;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.util.logging.Level.SEVERE;
 
 @Component
 @RequiredArgsConstructor
 public class FileChangeListener {
+
+    private static final Logger LOGGER = Logger.getLogger(FileChangeListener.class.getName());
 
     @Value("${directory.path}")
     private String directoryAddress;
@@ -32,9 +36,8 @@ public class FileChangeListener {
 
     @EventListener(ApplicationReadyEvent.class)
     public void createFileListener() {
-        final Path filePath = Paths.get(directoryAddress + "/" + filename);
-        try {
-            WatchService watchService = FileSystems.getDefault().newWatchService();
+        final Path filePath = Paths.get(directoryAddress, filename);
+        try(WatchService watchService = FileSystems.getDefault().newWatchService()) {
             Paths.get(directoryAddress).register(watchService, ENTRY_MODIFY);
 
             WatchKey key;
@@ -45,8 +48,11 @@ public class FileChangeListener {
                 });
                 key.reset();
             }
-        } catch (IOException | InterruptedException e) {
-            System.out.println(e);
+        } catch (IOException e) {
+            LOGGER.log(SEVERE, e.getMessage());
+        } catch (InterruptedException e) {
+            LOGGER.log(SEVERE, e.getMessage());
+            Thread.currentThread().interrupt();
         }
     }
 
