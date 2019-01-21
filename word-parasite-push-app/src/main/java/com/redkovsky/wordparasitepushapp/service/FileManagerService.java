@@ -1,27 +1,27 @@
-package com.redkovsky.wordparasitepushapp.component;
+package com.redkovsky.wordparasitepushapp.service;
 
+import com.google.common.collect.Iterables;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.SEVERE;
+import static org.apache.logging.log4j.util.Strings.EMPTY;
 
 @Service
 public class FileManagerService {
 
     private static final Logger LOGGER = Logger.getLogger(FileManagerService.class.getName());
 
-    public List<String> getFileContent(final Path path) {
+    public String getNewFileLine(final Path path) {
         try {
-            return Files.readAllLines(path);
+            return Iterables.getLast(Files.readAllLines(path));
         } catch (IOException e) {
             LOGGER.log(SEVERE, e.getMessage());
         }
-        return Collections.emptyList();
+        return EMPTY;
     }
 }

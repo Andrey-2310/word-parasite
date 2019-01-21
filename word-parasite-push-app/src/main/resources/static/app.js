@@ -15,8 +15,11 @@ const connect = () => {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/voice', function (voice) {
-            showGreeting(voice.body);
+            showReceivedText(voice.body);
         });
+        stompClient.subscribe('/topic/statistics', function (stats) {
+            showStats(JSON.parse(stats.body));
+        })
     });
 };
 
@@ -28,15 +31,29 @@ const disconnect = () => {
     console.log("Disconnected");
 };
 
-const sendName = () => {
-    stompClient.send("/app/user", {}, JSON.stringify({'name': $("#name").val()}));
+const sendWordParasite = () => {
+    stompClient.send("/wordparasite/add", {}, $("#wordparasite").val());
 };
 
-const showGreeting = message => {
+const showReceivedText = message => {
     $("#userinfo").append("<tr><td>" + message + "</td></tr>");
 };
 
+const showStats = stats => {
+    $("#stats").empty();
+    Object.keys(stats).forEach(function(key) {
+        $("#stats").append(`<tr><td>${key} : ${stats[key]}</td></tr>`);
+    });
+};
+
+const cleanStats = () => {
+    stompClient.send("/wordparasite/clean", {});
+};
+
 $(function () {
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
+    $('#sendword').click(function () {sendWordParasite()});
+    $('#cleanstats').click(function () {cleanStats()});
+
+    $('#connect').click(function() { connect(); });
+    $('#disconnect').click(function() { disconnect(); });
 });

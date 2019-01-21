@@ -18,24 +18,34 @@
             </div>
         </div>
         <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="name">What is your name?</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your name here...">
-                </div>
-                <button id="send" class="btn btn-default" type="submit">Send</button>
-            </form>
+            <div class="form-group">
+                <label for="wordparasite">Enter new word-parasite</label>
+                <input type="text" id="wordparasite" class="form-control" placeholder="Enter...">
+            </div>
+            <button id="sendword" class="btn btn-default">Send</button>
+            <button id="cleanstats" class="btn btn-default">Clean</button>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <table id="conversation" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>StockInfo</th>
+                    <th>Said phrases</th>
                 </tr>
                 </thead>
                 <tbody id="userinfo">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table id="statistics" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Statistics</th>
+                </tr>
+                </thead>
+                <tbody id="stats">
                 </tbody>
             </table>
         </div>
