@@ -1,5 +1,6 @@
 package com.redkovsky.wordparasitepushapp.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -30,11 +31,8 @@ public class WordParasiteService {
 
     public Map<String, Integer> receiveStatisticsWithNewLine(final String newLine) {
         final String editedLine = processLine(newLine);
-        wordParasites.forEach(wordParasite -> {
-            if (editedLine.contains(wordParasite)) {
-                statistics.merge(wordParasite, 1, Integer::sum);
-            }
-        });
+        wordParasites.forEach(wordParasite ->
+                statistics.merge(wordParasite, StringUtils.countMatches(editedLine, wordParasite), Integer::sum));
         return statistics;
     }
 
